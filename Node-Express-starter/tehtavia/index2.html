@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('[name="Submit"]').click(function (e) {
+          const hakusana = $("#tekstikentta").val().trim();
+
+          $.ajax({
+            type: "GET",
+            url: "http://localhost:3000/sanakirja/" + hakusana,
+            data: JSON.stringify({ hakusana: hakusana }),
+            contentType: "application/json",
+            success: function (data) {
+              const saatuSana = JSON.stringify(data);
+              $("#saatutulos").html("on engalnniksi: " + saatuSana);
+            },
+            error: function () {
+              $("#saatutulos").text("Haettua sanaparia ei löytynyt");
+            },
+          })
+            .done((data) => {
+              console.log({ data });
+            })
+            .fail((err) => {
+              console.error(err);
+            })
+            .always(() => {
+              console.log("always called");
+            });
+        });
+        e.preventDefault();
+      });
+    </script>
+    <title>suomi-englanti sanakirja</title>
+  </head>
+  <body>
+    <h1>suomi-englanti sanakirja</h1>
+    <li><a href="index.html">Lisää sanakirjaan uusi sana</a></li>
+    <li><a class="active" href="index2.html">Hae sanaa sanakirjasta</a></li>
+    <h3>hae sanaa suomeksi, niin saat vastaavan sanan engalnniksi</h3>
+    <td>
+      <input type="text" id="tekstikentta" />
+    </td>
+    <td>
+      <input name="Submit" type="button" value="Hae" />
+    </td>
+    <td>
+      <div id="saatutulos"></div>
+    </td>
+  </body>
+</html>

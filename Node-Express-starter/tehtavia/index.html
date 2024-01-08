@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('[name="Submit"]').click(function (e) {
+          alert("lisäys onnistui");
+
+          const data = {
+            fin: $("#fin").val(),
+            eng: $("#eng").val(),
+          };
+
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/sanakirja",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+          })
+            .done((data) => {
+              console.log({ data });
+            })
+            .fail((err) => {
+              console.error(err);
+            })
+            .always(() => {
+              console.log("always called");
+            });
+        });
+        e.preventDefault();
+      });
+    </script>
+    <title>suomi-englanti sanakirja</title>
+  </head>
+  <body>
+    <h1>suomi-englanti sanakirja</h1>
+    <li><a href="index2.html">Hae sanaa sanakirjasta</a></li>
+    <li><a class="active" href="index.html">Lisää sanakirjaan uusi sana</a></li>
+    <h3>lisää uusi sana sanakirjaan</h3>
+    <form>
+      <label for="fin">Suomi</label>
+      <input type="text" id="fin" name="fin" />
+      <label for="eng">Englanti</label>
+      <input type="text" id="eng" name="eng" />
+      <input name="Submit" type="button" value="Tallenna" />
+    </form>
+  </body>
+</html>
